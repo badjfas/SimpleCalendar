@@ -9,7 +9,11 @@ interface IProps {
   calendar: any[];
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
-  onClickDate: (_: string) => void;
+  onClickDate: (_: string, __: string, ___: string) => void;
+  clicked: {
+    row: string;
+    col: string;
+  };
 }
 const CalendarPresenter = ({
   calendar,
@@ -17,6 +21,7 @@ const CalendarPresenter = ({
   handleNextMonth,
   handlePrevMonth,
   onClickDate,
+  clicked,
 }: IProps) => {
   return (
     <MuiPaper elevation={3}>
@@ -37,7 +42,6 @@ const CalendarPresenter = ({
           <ArrowRightIcon />
         </IconButton>
       </MuiBox>
-
       <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
         <Typography
           style={{
@@ -45,6 +49,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
             color: "#FF385C",
           }}
         >
@@ -56,6 +61,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
           }}
         >
           월
@@ -66,6 +72,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
           }}
         >
           화
@@ -76,6 +83,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
           }}
         >
           수
@@ -86,6 +94,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
           }}
         >
           목
@@ -96,6 +105,7 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
           }}
         >
           금
@@ -106,115 +116,40 @@ const CalendarPresenter = ({
             justifyContent: "center",
             display: "flex",
             alignItems: "center",
+            fontSize: 12,
             color: "#001AFF",
           }}
         >
           토
         </Typography>
       </MuiBox>
-
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[0].map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
+      <MuiBox>
+        {calendar.map((e, row: any) => {
+          return e.map((k: any, col: any) => {
+            return (
+              <DateBtn
+                key={col}
+                onClick={() => {
+                  onClickDate(k.format("YYYY년 MM월 DD일"), row, col);
+                }}
+                style={{
+                  color: `${
+                    +clicked.col === col && +clicked.row === row ? "#fff" : ""
+                  }`,
+                  backgroundColor: `${
+                    +clicked.col === col && +clicked.row === row
+                      ? "#8fa4d1"
+                      : ""
+                  }`,
+                }}
+              >
+                <Typography>{k.format("D")}</Typography>
+              </DateBtn>
+            );
+          });
         })}
       </MuiBox>
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[1].map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
-        })}
-      </MuiBox>
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[2].map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
-        })}
-      </MuiBox>
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[3].map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
-        })}
-      </MuiBox>
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[4].map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
-        })}
-      </MuiBox>
-      <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        {calendar[5]?.map((e: any, i: number) => {
-          return (
-            <DateBtn
-              onClick={() => {
-                onClickDate(e.format("YYYY년 MM월 DD일"));
-              }}
-              key={i}
-              style={{
-                color: `${(i === 0 && "red") || (i === 6 && "blue")}`,
-              }}
-            >
-              <Typography>{e.format("D")}</Typography>
-            </DateBtn>
-          );
-        })}
-      </MuiBox>
+      ;
     </MuiPaper>
   );
 };

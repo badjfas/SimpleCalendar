@@ -6,7 +6,10 @@ const CalendarContainer = () => {
   let calendar: any[] = [];
   const [current, setCurrent] = useState(moment());
   const [date, setDate] = useState<string>("YYYY-MM-DD");
-
+  const [clicked, setClicked] = useState<{ row: string; col: string }>({
+    row: "9",
+    col: "9",
+  });
   const startWeek = current.clone().startOf("month").week();
   const endWeek =
     current.clone().endOf("month").week() === 1
@@ -23,25 +26,29 @@ const CalendarContainer = () => {
             .week(week)
             .startOf("week")
             .add(n + i, "day");
-
           return currents;
         })
     );
   }
 
   const onClickDate = useCallback(
-    (args: string) => {
+    (args: string, row: string, col: string) => {
       setDate(args);
-      console.log(args);
+      setClicked({
+        row: row,
+        col: col,
+      });
     },
     [setDate]
   );
 
   const handlePrevMonth = useCallback(() => {
+    setClicked({ row: "9", col: "9" });
     setCurrent(current.clone().subtract(1, "month"));
   }, [current]);
 
   const handleNextMonth = useCallback(() => {
+    setClicked({ row: "9", col: "9" });
     setCurrent(current.clone().add(1, "month"));
   }, [current]);
 
@@ -52,6 +59,7 @@ const CalendarContainer = () => {
       handlePrevMonth={handlePrevMonth}
       handleNextMonth={handleNextMonth}
       onClickDate={onClickDate}
+      clicked={clicked}
     />
   );
 };
