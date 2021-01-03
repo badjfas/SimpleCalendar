@@ -95,7 +95,6 @@ const CalendarPresenter = ({
           });
         })}
       </MuiBox>
-      ;
     </MuiPaper>
   );
 };
