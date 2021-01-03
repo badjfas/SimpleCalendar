@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const MuiPaper = styled(Paper)`
   position: absolute;
   width: 350px;
-  height: 400px;
   left: 50px;
   top: 50px;
 `;
