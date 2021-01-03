@@ -4,11 +4,15 @@ import moment from "moment";
 
 const CalendarContainer = () => {
   let calendar: any[] = [];
+  const dayOfTheWeekKo: string[] = ["일", "월", "화", "수", "목", "금", "토"];
   const [current, setCurrent] = useState(moment());
   const [date, setDate] = useState<string>("YYYY-MM-DD");
-  const [clicked, setClicked] = useState<{ row: string; col: string }>({
-    row: "9",
-    col: "9",
+  const [clicked, setClicked] = useState<{
+    row: string | null;
+    col: string | null;
+  }>({
+    row: null,
+    col: null,
   });
   const startWeek = current.clone().startOf("month").week();
   const endWeek =
@@ -43,12 +47,12 @@ const CalendarContainer = () => {
   );
 
   const handlePrevMonth = useCallback(() => {
-    setClicked({ row: "9", col: "9" });
+    setClicked({ row: null, col: null });
     setCurrent(current.clone().subtract(1, "month"));
   }, [current]);
 
   const handleNextMonth = useCallback(() => {
-    setClicked({ row: "9", col: "9" });
+    setClicked({ row: null, col: null });
     setCurrent(current.clone().add(1, "month"));
   }, [current]);
 
@@ -60,6 +64,7 @@ const CalendarContainer = () => {
       handleNextMonth={handleNextMonth}
       onClickDate={onClickDate}
       clicked={clicked}
+      dayOfTheWeekKo={dayOfTheWeekKo}
     />
   );
 };

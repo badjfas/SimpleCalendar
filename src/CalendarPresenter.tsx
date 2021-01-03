@@ -3,7 +3,7 @@ import React from "react";
 import { DateBtn, MuiBox, MuiPaper } from "./styles/styles";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 interface IProps {
   current: Moment;
   calendar: any[];
@@ -11,9 +11,10 @@ interface IProps {
   handleNextMonth: () => void;
   onClickDate: (_: string, __: string, ___: string) => void;
   clicked: {
-    row: string;
-    col: string;
+    row: string | null;
+    col: string | null;
   };
+  dayOfTheWeekKo: string[];
 }
 const CalendarPresenter = ({
   calendar,
@@ -22,6 +23,7 @@ const CalendarPresenter = ({
   handlePrevMonth,
   onClickDate,
   clicked,
+  dayOfTheWeekKo,
 }: IProps) => {
   return (
     <MuiPaper elevation={3}>
@@ -43,107 +45,51 @@ const CalendarPresenter = ({
         </IconButton>
       </MuiBox>
       <MuiBox display="flex" width={"100%"} height={"50px"} justfiy="center">
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-            color: "#FF385C",
-          }}
-        >
-          일
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-          }}
-        >
-          월
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-          }}
-        >
-          화
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-          }}
-        >
-          수
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-          }}
-        >
-          목
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-          }}
-        >
-          금
-        </Typography>
-        <Typography
-          style={{
-            width: "calc(100% / 7)",
-            justifyContent: "center",
-            display: "flex",
-            alignItems: "center",
-            fontSize: 12,
-            color: "#001AFF",
-          }}
-        >
-          토
-        </Typography>
+        {dayOfTheWeekKo.map((e, i) => (
+          <Typography
+            key={i}
+            style={{
+              width: "calc(100% / 7)",
+              justifyContent: "center",
+              display: "flex",
+              alignItems: "center",
+              fontSize: 12,
+            }}
+          >
+            {e}
+          </Typography>
+        ))}
       </MuiBox>
       <MuiBox>
         {calendar.map((e, row: any) => {
           return e.map((k: any, col: any) => {
             return (
               <DateBtn
+                disabled={k.format("YYMMDD") < moment().format("YYMMDD")}
                 key={col}
                 onClick={() => {
                   onClickDate(k.format("YYYY년 MM월 DD일"), row, col);
                 }}
                 style={{
                   color: `${
-                    +clicked.col === col && +clicked.row === row ? "#fff" : ""
+                    +clicked.col === col &&
+                    +clicked.row === row &&
+                    clicked.col !== null
+                      ? "#fff"
+                      : ""
                   }`,
                   backgroundColor: `${
-                    +clicked.col === col && +clicked.row === row
+                    +clicked.col === col &&
+                    +clicked.row === row &&
+                    clicked.col !== null
                       ? "#8fa4d1"
                       : ""
                   }`,
                 }}
               >
-                <Typography>{k.format("D")}</Typography>
+                <Typography style={{ fontSize: 14 }}>
+                  {k.format("D")}
+                </Typography>
               </DateBtn>
             );
           });
